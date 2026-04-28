@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>義大社工科</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Microsoft JhengHei", sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+}
+
+.container {
+  width: 94%;
+  max-width: 460px;
+  padding: 28px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  text-align: center;
+}
+
+.login-img {
+  width: 110px;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-size: 34px;
+  margin: 8px 0;
+  color: #fff;
+}
+
+#time {
+  font-size: 15px;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+.label {
+  text-align: left;
+  font-size: 16px;
+  margin-top: 12px;
+  color: #fff;
+}
+
+.input-box {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.input-box span {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 88%;
+  height: 54px;
+  padding-left: 42px;
+  margin: 6px auto 0 auto;
+  display: block;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  outline: none;
+}
+
+/* ✅ 新增：記住我 checkbox 樣式 */
+.remember-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-left: 6%;
+  color: #fff;
+  font-size: 15px;
+}
+
+.remember-box input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+button {
+  flex: 1;
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.login-btn {
+  background: #1e88e5;
+  color: white;
+}
+.login-btn:hover { background: #1565c0; }
+
+.reg-btn {
+  background: #42a5f5;
+  color: white;
+}
+.reg-btn:hover { background: #1e88e5; }
+
+.admin-btn {
+  width: 100%;
+  margin-top: 14px;
+  height: 52px;
+  border-radius: 14px;
+  background: #ff5252;
+  color: white;
+  font-size: 17px;
+}
+.admin-btn:hover { background: #e53935; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <img class="login-img" src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png">
+
+  <h1>義大社工科</h1>
+
+  <div id="time"></div>
+
+  <div class="label">帳號</div>
+  <div class="input-box">
+    <span>👤</span>
+    <input type="text" id="account" placeholder="請輸入帳號">
+  </div>
+
+  <div class="label">密碼</div>
+  <div class="input-box">
+    <span>🔒</span>
+    <input type="password" id="password" placeholder="請輸入密碼">
+  </div>
+
+  <!-- ✅ 新增：記住我 14 天 -->
+  <div class="remember-box">
+    <input type="checkbox" id="remember">
+    <label for="remember">記住我（14天內自動登入）</label>
+  </div>
+
+  <div class="button-group">
+    <button class="reg-btn" onclick="goRegister()">註冊</button>
+    <button class="login-btn" onclick="goLogin()">登入</button>
+  </div>
+
+  <button class="admin-btn" onclick="extraAction()">後台管理</button>
+
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyLe7PjmtC5efI4mjx1ChAVhnFZ77TN7DwxUwtJgQwr3STzjVxeeRBLaHJx5qS1DPV_hA/exec";
+
+// ✅ 頁面載入時檢查自動登入
+window.onload = function () {
+  const saved = localStorage.getItem("loginInfo");
+  if (saved) {
+    const info = JSON.parse(saved);
+    const now = new Date().getTime();
+    if (now < info.expiry) {
+      // 還在14天內，直接跳轉
+      window.location.href = "main.html";
+    } else {
+      // 已過期，清除
+      localStorage.removeItem("loginInfo");
+    }
+  }
+};
+
+// 時間
+function updateTime() {
+  document.getElementById("time").innerText =
+    new Date().toLocaleString("zh-TW");
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+function goRegister() {
+  window.location.href = "register.html";
+}
+
+function goLogin() {
+  const acc = document.getElementById("account").value.trim();
+  const pw  = document.getElementById("password").value.trim();
+  const remember = document.getElementById("remember").checked; // ✅ 是否勾選記住我
+
+  if (!acc || !pw) {
+    alert("請輸入帳號密碼");
+    return;
+  }
+
+  fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain" }, // ✅ 避免 CORS 問題
+    body: JSON.stringify({
+      action: "login",
+      account: acc,
+      password: pw
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+
+      if (remember) {
+        // ✅ 勾選記住我：儲存14天
+        const expiry = new Date().getTime() + 14 * 24 * 60 * 60 * 1000;
+        localStorage.setItem("loginInfo", JSON.stringify({
+          name: data.name,
+          account: acc,
+          expiry: expiry
+        }));
+      } else {
+        // ✅ 未勾選：只存 session，關掉瀏覽器就清除
+        localStorage.removeItem("loginInfo");
+        sessionStorage.setItem("loginInfo", JSON.stringify({
+          name: data.name,
+          account: acc
+        }));
+      }
+
+      window.location.href = "main.html";
+
+    } else {
+      alert("帳號或密碼錯誤");
+    }
+  })
+  .catch(err => {
+    alert("連線失敗，請稍後再試");
+    console.error(err);
+  });
+}
+
+function extraAction() {
+  window.location.href = "back.html";
+}
+</script>
+
+</body>
+</html>
