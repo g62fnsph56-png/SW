@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>註冊頁面</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: linear-gradient(180deg, #6ec6ff, #b3e5fc, #e1f5fe);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ☁️ 雲朵 */
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  opacity: 0.8;
+  animation: floatCloud linear infinite;
+  z-index: 1;
+}
+
+.cloud:before,
+.cloud:after {
+  content: "";
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.cloud1 {
+  width: 120px;
+  height: 60px;
+  top: 10%;
+  left: -150px;
+  animation-duration: 40s;
+}
+.cloud1:before {
+  width: 60px;
+  height: 60px;
+  top: -20px;
+  left: 20px;
+}
+.cloud1:after {
+  width: 70px;
+  height: 70px;
+  top: -25px;
+  right: 20px;
+}
+
+.cloud2 {
+  width: 150px;
+  height: 70px;
+  top: 40%;
+  left: -200px;
+  opacity: 0.6;
+  animation-duration: 55s;
+}
+.cloud2:before {
+  width: 80px;
+  height: 80px;
+  top: -25px;
+  left: 30px;
+}
+.cloud2:after {
+  width: 90px;
+  height: 90px;
+  top: -30px;
+  right: 30px;
+}
+
+.cloud3 {
+  width: 100px;
+  height: 50px;
+  top: 70%;
+  left: -180px;
+  opacity: 0.7;
+  animation-duration: 45s;
+}
+.cloud3:before {
+  width: 50px;
+  height: 50px;
+  top: -15px;
+  left: 20px;
+}
+.cloud3:after {
+  width: 60px;
+  height: 60px;
+  top: -20px;
+  right: 20px;
+}
+
+@keyframes floatCloud {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(160vw); }
+}
+
+/* ☁️ 表單 */
+.container {
+  position: relative;
+  z-index: 10;
+  width: 92%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.92);
+  padding: 35px 28px;
+  border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.15);
+}
+
+#time {
+  font-size: 14px;
+  color: #555;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 22px;
+}
+
+.label {
+  margin-top: 14px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #444;
+}
+
+/* 🔥 欄位縮短 */
+.input-box {
+  position: relative;
+  max-width: 320px;
+  margin: 6px auto 0 auto;
+}
+
+.input-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+input {
+  width: 100%;
+  height: 48px;
+  padding: 10px 10px 10px 40px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #42a5f5;
+  box-shadow: 0 0 10px rgba(66,165,245,0.3);
+}
+
+/* 按鈕 */
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 26px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button {
+  flex: 1;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.reg-btn {
+  background: linear-gradient(135deg, #42a5f5, #478ed1);
+}
+
+.back-btn {
+  background: linear-gradient(135deg, #9e9e9e, #757575);
+}
+</style>
+</head>
+
+<body>
+
+<!-- ☁️ 雲朵 -->
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
+<div class="cloud cloud3"></div>
+
+<div class="container">
+
+  <div id="time"></div>
+
+  <h2><i class="fa-solid fa-user-plus"></i> 會員註冊</h2>
+
+  <div class="label"><i class="fa-solid fa-user"></i> 姓名</div>
+  <div class="input-box">
+    <i class="fa-solid fa-id-card"></i>
+    <input type="text" id="name">
+  </div>
+
+  <div class="label"><i class="fa-solid fa-at"></i> 帳號</div>
+  <div class="input-box">
+    <i class="fa-solid fa-user-pen"></i>
+    <input type="text" id="account">
+  </div>
+
+  <div class="label"><i class="fa-solid fa-lock"></i> 密碼（4位數）</div>
+  <div class="input-box">
+    <i class="fa-solid fa-key"></i>
+    <input type="password" id="password" maxlength="4">
+  </div>
+
+  <div class="button-group">
+    <button class="reg-btn" onclick="register()">
+      <i class="fa-solid fa-check"></i> 註冊
+    </button>
+    <button class="back-btn" onclick="goBack()">
+      <i class="fa-solid fa-arrow-left"></i> 返回
+    </button>
+  </div>
+
+</div>
+
+<script>
+
+const API_URL = "https://script.google.com/macros/s/AKfycbyLe7PjmtC5efI4mjx1ChAVhnFZ77TN7DwxUwtJgQwr3STzjVxeeRBLaHJx5qS1DPV_hA/exec";
+
+// 時間
+function updateTime() {
+  document.getElementById("time").innerText =
+    new Date().toLocaleString("zh-TW");
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// 返回
+function goBack() {
+  window.location.href = "index.html";
+}
+
+// 註冊
+function register() {
+  const name = document.getElementById("name").value.trim();
+  const account = document.getElementById("account").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  // ❌ 空值
+  if (!name || !account || !password) {
+    alert("請填寫所有欄位");
+    return;
+  }
+
+  // ❌ 中文檢查（防繞過）
+  if (!/^[\u4e00-\u9fa5]+$/.test(name)) {
+    alert("姓名只能輸入中文");
+    return;
+  }
+
+  // ❌ 密碼格式
+  if (!/^\d{4}$/.test(password)) {
+    alert("密碼需為4位數字");
+    return;
+  }
+
+  fetch(API_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "text/plain"  // ✅ 改這裡，避免 CORS 預檢
+  },
+  body: JSON.stringify({
+    action: "register",
+    name,
+    account,
+    password
+  })
+})
+.then(res => res.json())
+.then(data => {
+  if (data.status === "duplicate") {
+    alert("帳號已存在");
+  } else if (data.status === "success") {
+    alert("註冊成功！");
+    window.location.href = "index.html";
+  } else {
+    alert(data.message || "發生錯誤");
+  }
+})
+.catch(err => {
+  console.error(err);
+  alert("連線失敗，請稍後再試");
+});
+
+}
+</script>
+
+</body>
+</html>
