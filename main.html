@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主頁</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: linear-gradient(180deg, #6ec6ff, #b3e5fc);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 22px;
+  padding: 30px 25px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.top-bar {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ✅ 新增：右上角登出按鈕 */
+.logout-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  height: 34px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 10px;
+  background: #ef5350;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background: #c62828;
+}
+
+.menu {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.menu button {
+  height: 55px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.menu button:hover {
+  transform: translateY(-2px);
+}
+
+.btn-device {
+  background: linear-gradient(135deg, #42a5f5, #478ed1);
+}
+
+.btn-stationery {
+  background: linear-gradient(135deg, #66bb6a, #43a047);
+}
+
+.btn-food {
+  background: linear-gradient(135deg, #ffa726, #fb8c00);
+}
+
+.back-btn {
+  margin-top: 25px;
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 14px;
+  background: #9e9e9e;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- 左上：時間 + 姓名 -->
+  <div class="top-bar">
+    <div id="time"></div>
+    <div id="userName"></div>
+  </div>
+
+  <!-- ✅ 右上：登出按鈕 -->
+  <button class="logout-btn" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i> 登出
+  </button>
+
+  <!-- 功能選單 -->
+  <div class="menu">
+    <button class="btn-device" onclick="goDevice()">
+      <i class="fa-solid fa-laptop"></i> 設備
+    </button>
+
+    <button class="btn-stationery">
+      <i class="fa-solid fa-pen"></i> 文具
+    </button>
+
+    <button class="btn-food">
+      <i class="fa-solid fa-utensils"></i> 訂餐
+    </button>
+  </div>
+
+  
+
+</div>
+
+<script>
+
+// ✅ 頁面載入時驗證登入狀態
+window.onload = function () {
+  const saved = localStorage.getItem("loginInfo")
+             || sessionStorage.getItem("loginInfo");
+
+  if (!saved) {
+    // 沒有登入資訊，踢回登入頁
+    window.location.href = "index.html";
+    return;
+  }
+
+  const info = JSON.parse(saved);
+
+  // 檢查 localStorage 的是否過期（sessionStorage 沒有 expiry）
+  if (info.expiry && new Date().getTime() > info.expiry) {
+    localStorage.removeItem("loginInfo");
+    window.location.href = "index.html";
+    return;
+  }
+
+  // ✅ 顯示姓名
+  document.getElementById("userName").innerText = "👤 " + info.name;
+};
+
+// 時間
+function updateTime() {
+  document.getElementById("time").innerText =
+    new Date().toLocaleString("zh-TW");
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// ✅ 登出：清除所有登入資訊
+function logout() {
+  if (confirm("確定要登出嗎？")) {
+    localStorage.removeItem("loginInfo");
+    sessionStorage.removeItem("loginInfo");
+    window.location.href = "index.html";
+  }
+}
+
+// 返回（保留登入狀態，只是回上一頁）
+function goBack() {
+  window.location.href = "index.html";
+}
+
+function goDevice() {
+  window.location.href = "device.html";
+}
+
+</script>
+
+</body>
+</html>
